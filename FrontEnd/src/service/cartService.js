@@ -4,7 +4,7 @@ class CartService{
     
 
     addItemToCartEach(productId,quantity,custId){
-        return axios.post("http://localhost:9191/cart/addToCartt/"+custId,{
+        return axios.post("http://localhost:9191/api/v1/cart/"+custId,{
             productId:productId,
             productQuantity:quantity
         });
@@ -12,11 +12,11 @@ class CartService{
     }
 
     getCartItemsByCustomerId(custId){
-        return axios.get("http://localhost:9191/cart/cartItem/"+custId);
+        return axios.get("http://localhost:9191/api/v1/cart/cart-item/"+custId);
     }
 
     cartUpdate(productId,quantity,custId){
-        return axios.post("http://localhost:9191/cart/updateAndAddProduct/"+custId,{
+        return axios.put("http://localhost:9191/api/v1/cart/"+custId,{
             productId:productId,
             productQuantity:quantity
         });
@@ -24,23 +24,23 @@ class CartService{
     }
 
     checkProductInCart(custId,pid){
-        return axios.get("http://localhost:9191/cart/checkProductInCart/"+custId+"/"+pid);
+        return axios.get("http://localhost:9191/api/v1/cart/"+custId+"/"+pid);
     }
 
 
     getCartItemsCount(custId){
-        return axios.get("http://localhost:9191/cart/countItems/"+custId);
+        return axios.get("http://localhost:9191/api/v1/cart/count-items/"+custId);
     }
     
     getCart(custId)
     {
-        return axios.get("http://localhost:9191/cart/"+custId);
+        return axios.get("http://localhost:9191/api/v1/cart/"+custId);
     }
 
 
     deleteItemFromCart(productId,custId)
     {
-        return axios.delete("http://localhost:9191/cart/delProduct/"+custId+"/"+productId);
+        return axios.delete("http://localhost:9191/api/v1/cart/customers/"+custId+"/products/"+productId);
     }
    
 }

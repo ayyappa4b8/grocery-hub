@@ -25,29 +25,27 @@ import jakarta.validation.Valid;
 
 @RestController
 //@CrossOrigin(origins="*")
-@RequestMapping("/customer")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
-	
-	
-	
-	@PostMapping("/saveCustomer")
+
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public String saveCustomer(@RequestBody @Valid Customer customer) {
 		System.out.println(customer.getCustomerEmail());
 		return customerService.saveCustomer(customer);
 	}
 	
-	@PostMapping("/subsCustomer")
+	@PostMapping("/subscribe")
 	@ResponseStatus(HttpStatus.CREATED)
 	public String subsCustomer(@RequestBody SubscribeCustomers subsCust) {
 		return customerService.saveSubscribeCustomers(subsCust);
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/allCustomers")
+	@GetMapping
 	public List<Customer> all() {
 		return customerService.getAllCustomers();
 	}
@@ -64,7 +62,7 @@ public class CustomerController {
 		return customerService.getCustomerById(customerId);
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public String deleteCustById(@PathVariable("id") long custId) throws CustomerNotFoundException
 	{
 		return customerService.disabledCustomerbyId(custId);

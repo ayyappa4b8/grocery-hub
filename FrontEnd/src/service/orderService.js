@@ -5,19 +5,19 @@ class OrderService{
 
 
     getAllOrders(){
-        return axios.get("http://localhost:9191/order/getAllOrders");
+        return axios.get("http://localhost:9191/api/v1/orders");
     }
 
     getOrderById(id){
-        return axios.get("http://localhost:9191/order/getOrderById/"+id);
+        return axios.get("http://localhost:9191/api/v1/orders/"+id);
     }
 
     getOrderByCustomerId(uid){
-        return axios.get("http://localhost:9191/order/getAllCustomerOrdersById/"+uid);
+        return axios.get("http://localhost:9191/api/v1/orders/customers"+uid);
     }
 
     placeOrder(custId,customerAddress,customerContact){
-        return axios.post("http://localhost:9191/order/placeOrder/"+custId,{
+        return axios.post("http://localhost:9191/api/v1/orders/"+custId,{
             customerAddress:customerAddress,
             customerContact:customerContact
         });

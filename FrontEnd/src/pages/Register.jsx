@@ -53,7 +53,7 @@ const RegisterTest = () => {
       // console.log("@@@@@@@222");
       setFormErrors({});
       try{
-        const res=await axios.post("http://localhost:9191/customer/saveCustomer",{
+        const res=await axios.post("http://localhost:9191/api/v1/customers",{
           customerName: customerName,
           customerEmail: customerEmail,
           customerPassword: customerPassword,

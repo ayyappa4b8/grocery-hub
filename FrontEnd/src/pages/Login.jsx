@@ -47,14 +47,7 @@ const LoginTest = () => {
     if(flag===true)
     {
       try{
-        if(customerEmail==="admin@gmail.com" && customerPassword==="admin123")
-        {
-          localStorage.setItem('admin','admin');
-          localStorage.setItem('token','admin');
-          navigate('/admin');
-        }
-        else{
-        await axios.post("http://localhost:9191/customer/login",{
+        await axios.post("http://localhost:9191/api/v1/customers/login",{
           customerEmail:customerEmail,
           customerPassword:customerPassword
         }).then((res) =>
@@ -70,8 +63,9 @@ const LoginTest = () => {
             icon:"success"});
             if(res.data.roleId == 4){
               navigate('/admin');
+            } else{
+              navigate("/");
             }
-            navigate("/");
           }
           else{
             // alert("Invalid credentials");
@@ -82,7 +76,6 @@ const LoginTest = () => {
         },fail =>{
           console.error(fail);
         });
-      }
       }
       catch(err){
         alert(err);

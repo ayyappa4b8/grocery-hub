@@ -25,8 +25,7 @@ import com.grocery.hub.product_service.entity.Product;
 import com.grocery.hub.product_service.service.ProductService;
 
 @RestController
-//@CrossOrigin(origins ="*")
-@RequestMapping("/product")
+@RequestMapping("/api/v1/products")
 public class ProductController {
 	
 	@Autowired
@@ -36,7 +35,7 @@ public class ProductController {
 	
 
 
-	@PostMapping(value="/saveProduct",consumes="multipart/form-data")
+	@PostMapping(consumes="multipart/form-data")
 	@ResponseStatus(HttpStatus.CREATED)
 	public String createProduct(@RequestParam("productImage") MultipartFile productImage,
 			@RequestParam("productName") String productName,
@@ -49,14 +48,14 @@ public class ProductController {
 	
 	
 	
-	@GetMapping("/allProducts")
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<ProductResponse> getAllProducts(){
 		return productService.getAllProducts();
 	}
 	
-	@GetMapping("/cat/{category}")
-	public List<Product> getProductByCategory(@PathVariable("category") long category){
+	@GetMapping("/{category-id}")
+	public List<Product> getProductByCategory(@PathVariable("category-id") long category){
 		System.out.println(category);
 		return productService.getProductByCatgeory(category);
 	}
@@ -66,13 +65,13 @@ public class ProductController {
 		return productService.getProductById(productId);
 	}
 	
-	@GetMapping("/sort/{offset}/{pageSize}")
-	public Page<ProductResponse> paginationProduct(@PathVariable("offset") int offset,@PathVariable("pageSize") int pageSize)
+	@GetMapping("/sort/{offset}/{page-size}")
+	public Page<ProductResponse> paginationProduct(@PathVariable("offset") int offset,@PathVariable("page-size") int pageSize)
 	{
 		return productService.paginationProduct(offset,pageSize);
 	}
 	
-	@PutMapping(value="/update/{id}",consumes="multipart/form-data")
+	@PutMapping(value="/{id}",consumes="multipart/form-data")
 	public String updateProduct(@PathVariable("id") long productId,
 			@RequestParam("productImage") MultipartFile productImage,
 			@RequestParam("productName") String productName,
@@ -84,14 +83,14 @@ public class ProductController {
 		return productService.updateProductById(productImage,productName,productCategoryId,description,productPrice, productId);
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public String deleteProduct(@PathVariable("id") long productId) {
 		productService.deleteProductById(productId);
 		return "product with "+productId+" deleted succesfully";
 	}
 
 
-	@PostMapping(value="/saveProductCategory")
+	@PostMapping(value="/categories")
 	@ResponseStatus(HttpStatus.CREATED)
 	public String createProductCategory(@RequestParam("productCategory") String productCategory,
 								@RequestParam("description") String description)throws IOException{
@@ -99,19 +98,19 @@ public class ProductController {
 		return productCategoryService.saveProductCategory(productCategory,description);
 	}
 
-	@GetMapping("/allProductCategories")
+	@GetMapping("/categories")
 	@ResponseStatus(HttpStatus.OK)
 	public List<ProductCategory> getAllProductCategories(){
 		return productCategoryService.getALlProductCategories();
 	}
 
-	@DeleteMapping("/delete/category/{id}")
+	@DeleteMapping("/categories/{id}")
 	public String deleteProductCategory(@PathVariable("id") long categoryId) {
 		productCategoryService.deleteProductCategoryById(categoryId);
 		return "product actegory with "+categoryId+" deleted succesfully";
 	}
 
-	@PutMapping(value="/update/category/{id}")
+	@PutMapping(value="/categories/{id}")
 	public String updateProduct(@PathVariable("id") long productId,
 								@RequestBody ProductCategoryRequest productCategoryRequest
 								) throws IOException{
@@ -119,7 +118,7 @@ public class ProductController {
 		return productCategoryService.updateProductCategoryById(productId,productCategoryRequest.getEditedProductCategory(),productCategoryRequest.getEditedDescription());
 	}
 
-	@GetMapping("/category/{id}")
+	@GetMapping("/categories/{id}")
 	public ProductCategory getProductCategoryById(@PathVariable("id") long categoryId) {
 		return productCategoryService.findProductCategoryById(categoryId);
 	}

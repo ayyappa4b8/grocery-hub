@@ -4,18 +4,18 @@ class CustomerService{
 
     
     getAllCustomers(){
-        return axios.get("http://localhost:9191/customer/allCustomers");
+        return axios.get("http://localhost:9191/api/v1/api/v1/customers");
     }
 
     subsCust(custEmail,custName){
-        return axios.post("http://localhost:9191/customer/subsCustomer",{
+        return axios.post("http://localhost:9191/api/v1/api/v1/customers/subscribe",{
             custEmail:custEmail,
             custName:custName
         });
     }
 
     deleteCustomerById(id){
-        return axios.delete("http://localhost:9191/customer/delete/"+id);
+        return axios.delete("http://localhost:9191/api/v1/api/v1/customers/"+id);
     }
 
    

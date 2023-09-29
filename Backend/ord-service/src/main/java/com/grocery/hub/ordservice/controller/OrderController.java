@@ -16,37 +16,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-//@CrossOrigin(origins="*")
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
-	
 
-	
-	@PostMapping("/placeOrder/{custId}")
+	@PostMapping("/{cust-id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderResponse placeOrder(@PathVariable("custId") long custId, @RequestBody OrdRequest request) {
+	public OrderResponse placeOrder(@PathVariable("cust-id") long custId, @RequestBody OrdRequest request) {
 		
 		return orderService.placeOrderr(request,custId);
 
 	}
 	
-	@GetMapping("/getAllOrders")
+	@GetMapping
 	public List<CustomerOrder> getAllOrders(){
 		
 		return orderService.getAllOrderDetails();
 	}
 	
-	@GetMapping("/getAllCustomerOrdersById/{custId}")
-	public List<CustomerOrder> getCustOrderById(@PathVariable("custId") long custId)
+	@GetMapping("/customers/{cust-id}")
+	public List<CustomerOrder> getCustOrderById(@PathVariable("cust-id") long custId)
 	{
 		return orderService.getCustOrderById(custId);
 	}
 	
-	@GetMapping("/getOrderById/{id}")
+	@GetMapping("/{id}")
 	public CustomerOrder getOrderById(@PathVariable("id") long orderId)
 	{
 		return orderService.getOrderById(orderId);
