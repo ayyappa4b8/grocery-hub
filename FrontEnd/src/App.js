@@ -3,8 +3,8 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import { BrowserRouter, Routes,Route, useNavigate} from 'react-router-dom';
 import Home from './pages/Home';
-import AddProduct from './components/AddProduct';
-import AddProductCategory from './components/AddProductCategory';
+import Product from './components/Product';
+import ProductCategory from './components/ProductCategory';
 import EditProductCategory from './components/EditProductCategory';
 import Admin from './pages/Admin';
 import EditProduct from './components/EditProduct';
@@ -56,8 +56,8 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/login" element={<Login/>}/>
           <Route path="/admin" element={<Admin/>}/>
-          <Route path="/admin/addProduct" element={<AddProduct/>}/>
-          <Route path="/admin/addProductCategory" element={<AddProductCategory/>}/>
+          <Route path="/admin/product" element={<Product/>}/>
+          <Route path="/admin/productCategory" element={<ProductCategory/>}/>
           <Route path="/admin/editProductCategory/:categoryId" element={<EditProductCategory/>}/>
           <Route path="/admin/editProduct/:id" element={<EditProduct/>}/>
           <Route path="/cat/:category" element={<FilterCategory/>}/>

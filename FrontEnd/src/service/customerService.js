@@ -1,21 +1,22 @@
 import axios from "axios";
+import { API_URL } from "../constants";
 
 class CustomerService{
 
     
     getAllCustomers(){
-        return axios.get("http://localhost:9191/api/v1/api/v1/customers");
+        return axios.get(`${API_URL}/customers`);
     }
 
     subsCust(custEmail,custName){
-        return axios.post("http://localhost:9191/api/v1/api/v1/customers/subscribe",{
+        return axios.post( `${API_URL}/customers/subscribe`,{
             custEmail:custEmail,
             custName:custName
         });
     }
 
     deleteCustomerById(id){
-        return axios.delete("http://localhost:9191/api/v1/api/v1/customers/"+id);
+        return axios.delete(`${API_URL}/customers/${id}`);
     }
 
    

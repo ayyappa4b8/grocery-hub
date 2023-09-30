@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import swal from 'sweetalert';
+import { API_URL } from '../constants';
 
 const LoginTest = () => {
 
@@ -47,7 +48,7 @@ const LoginTest = () => {
     if(flag===true)
     {
       try{
-        await axios.post("http://localhost:9191/api/v1/customers/login",{
+        await axios.post(`${API_URL}/customers/login`,{
           customerEmail:customerEmail,
           customerPassword:customerPassword
         }).then((res) =>

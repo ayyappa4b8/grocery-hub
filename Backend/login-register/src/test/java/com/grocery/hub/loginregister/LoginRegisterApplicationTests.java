@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.grocery.hub.loginregister.dto.CustomerDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,7 +65,7 @@ class LoginRegisterApplicationTests {
 		c.setCustomerEmail("asdf@gmail.com");
 		c.setCustomerPassword("asdf");
 		when(customerRepository.findByCustomerId(1)).thenReturn(c);
-		Customer cc = customerService.getCustomerById(1);
+		CustomerDto cc = customerService.getCustomerById(1);
 		assertEquals(c,cc);
 	}
 	

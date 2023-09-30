@@ -1,4 +1,4 @@
-package com.grocery.hub.loginregister.Dto;
+package com.grocery.hub.loginregister.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

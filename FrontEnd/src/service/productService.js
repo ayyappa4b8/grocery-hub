@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_URL } from "../constants";
 
 class ProductService{
 
     saveProduct(productImage,productName,productCategory,description,productPrice){
-        return axios.post("http://localhost:9191/api/v1/products",
+        return axios.post(`${API_URL}/products`,
         {
             productImage:productImage,
             productName:productName,
@@ -20,15 +21,15 @@ class ProductService{
     }
 
     getAllProducts(){
-        return axios.get("http://localhost:9191/api/v1/products");
+        return axios.get(`${API_URL}/products`);
     }
 
     getAllProductsByPagination(offset,pageSize){
-        return axios.get("http://localhost:9191/api/v1/products/sort/"+offset+"/"+pageSize);
+        return axios.get(`${API_URL}/products/sort/${offset}/${pageSize}`);
     }
 
     saveProductCategory(productCategory,description){
-        return axios.post("http://localhost:9191/api/v1/products/categories",
+        return axios.post(`${API_URL}/products/categories`,
         {
             productCategory:productCategory,
             description:description
@@ -42,38 +43,38 @@ class ProductService{
     }
 
     getAllProductCategories(){
-        return axios.get("http://localhost:9191/api/v1/products/categories");
+        return axios.get(`${API_URL}/products/categories`);
     }
 
     deleteProductCategoryById(id){
-        return axios.delete("http://localhost:9191/api/v1/products/categories/"+id);
+        return axios.delete(`${API_URL}/products/categories/${id}`);
     }
 
     updateProductCategory(categoryId, editedProductCategory, editedDescription){
-        return axios.put("http://localhost:9191/api/v1/products/categories/"+categoryId,{
+        return axios.put(`${API_URL}/products/categories/${categoryId}`,{
             editedProductCategory:editedProductCategory,
             editedDescription:editedDescription
            });
     }
 
     findProductCategoryById(id){
-        return axios.get("http://localhost:9191/api/v1/products/categories/"+id);
+        return axios.get(`${API_URL}/products/categories/${id}`);
     }
 
     getProductById(id){
-        return axios.get("http://localhost:9191/api/v1/products/"+id);
+        return axios.get(`${API_URL}/products/${id}`);
     }
 
     deleteProductById(id){
-        return axios.delete("http://localhost:9191/api/v1/products/"+id);
+        return axios.delete(`${API_URL}/products/${id}`);
     }
 
     getProductsByCategory(cat){
-        return axios.get("http://localhost:9191/api/v1/products/"+cat);
+        return axios.get(`${API_URL}/products/${cat}`);
     }
 
     editProduct(productImage,productName,productCategory,description,productPrice,productId){
-        return axios.put("http://localhost:9191/api/v1/products/"+productId,{
+        return axios.put(`${API_URL}/products/${productId}`,{
             productImage:productImage,
             productName:productName,
             productCategory:productCategory,

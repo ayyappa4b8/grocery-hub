@@ -2,11 +2,14 @@ package com.grocery.hub.shoppingcartservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.grocery.hub.shoppingcartservice.common.AddToCartDto;
 import com.grocery.hub.shoppingcartservice.common.AddToCartResponse;
+import com.grocery.hub.shoppingcartservice.dto.CartDTO;
 import com.grocery.hub.shoppingcartservice.entity.Cart;
 import com.grocery.hub.shoppingcartservice.repository.CartRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,10 +18,6 @@ import com.grocery.hub.shoppingcartservice.common.CartItems;
 import com.grocery.hub.shoppingcartservice.common.Product;
 
 import lombok.extern.slf4j.Slf4j;
-
-
-
-
 
 @Service
 @Slf4j
@@ -29,9 +28,10 @@ public class CartService {
 	
 	@Autowired
 	private RestTemplate restTemplate;
-	
 
-	
+	@Autowired
+	private ModelMapper modelMapper;
+
 	public AddToCartResponse cartResponse(long customerId, List<Cart> ct) {
 		AddToCartResponse ar = new AddToCartResponse();
 		 List<CartItems> ci = new ArrayList<CartItems>();
@@ -39,7 +39,6 @@ public class CartService {
 			long cartItemCount=0;
 			
 			for(Cart c: ct) {
-				System.out.println(c);
 				CartItems cartItem =  new CartItems();
 				cartItem.setProductId(c.getProductId());
 				cartItem.setProductName(c.getProductName());
@@ -62,16 +61,17 @@ public class CartService {
 	public AddToCartResponse getCartItemsById(long customerId){
 		
         List<Cart> ct = cartRepository.getCartItemsById(customerId);
-        System.out.println(ct);
         AddToCartResponse ar = cartResponse(customerId,ct);
         return ar;
        
 	}
 	
-	public List<Cart> getCartItems(long customerId){
+	public List<CartDTO> getCartItems(long customerId){
 		
-        List<Cart> ct = cartRepository.getCartItemsById(customerId);
-        return ct;
+        List<Cart> cartList = cartRepository.getCartItemsById(customerId);
+        return cartList.stream()
+				.map(cart -> modelMapper.map(cart, CartDTO.class))
+				.collect(Collectors.toList());
        
 	}
 	
@@ -95,15 +95,15 @@ public class CartService {
         return ar;
 	}
 	
-	public Cart checkProductInCart(long cid,long pid)
+	public CartDTO checkProductInCart(long cid,long pid)
 	{
-		Cart c = cartRepository.getProductFromCart(cid,pid);
-		if(c==null)
+		Cart cart = cartRepository.getProductFromCart(cid,pid);
+		if(cart==null)
 		{
 			return null;
 		}
 		else {
-			return c;
+			return modelMapper.map(cart, CartDTO.class);
 		}
 	}
 	
@@ -134,7 +134,7 @@ public class CartService {
 	public String updateAndAddProduct(long cid,AddToCartDto addToCartDto)
 	{
 		long pid = addToCartDto.getProductId();
-		Cart c1 = checkProductInCart(cid,pid);
+		CartDTO c1 = checkProductInCart(cid,pid);
 		long q1=c1.getProductQuantity();
 		long qyt = q1+addToCartDto.getProductQuantity();
 		cartRepository.setNewQuantity(cid,pid,qyt);

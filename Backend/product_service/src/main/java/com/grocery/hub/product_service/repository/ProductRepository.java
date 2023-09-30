@@ -9,8 +9,6 @@ import com.grocery.hub.product_service.entity.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long>{
-	
-	Product findByProductId(long productId);
 
 	List<Product> findByCategory(Long categoryId);
 

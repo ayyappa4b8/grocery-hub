@@ -2,8 +2,9 @@ package com.grocery.hub.loginregister.controller;
 
 import java.util.List;
 
-import com.grocery.hub.loginregister.Dto.LoginDto;
-import com.grocery.hub.loginregister.Dto.LoginResponse;
+import com.grocery.hub.loginregister.dto.CustomerDto;
+import com.grocery.hub.loginregister.dto.LoginDto;
+import com.grocery.hub.loginregister.dto.LoginResponse;
 import com.grocery.hub.loginregister.entity.Customer;
 import com.grocery.hub.loginregister.entity.SubscribeCustomers;
 import com.grocery.hub.loginregister.exceptions.CustomerNotFoundException;
@@ -24,7 +25,6 @@ import jakarta.validation.Valid;
 
 
 @RestController
-//@CrossOrigin(origins="*")
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
@@ -58,7 +58,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/{id}")
-	public Customer customerById (@PathVariable("id") long customerId) throws CustomerNotFoundException {
+	public CustomerDto customerById (@PathVariable("id") long customerId) throws CustomerNotFoundException {
 		return customerService.getCustomerById(customerId);
 	}
 	

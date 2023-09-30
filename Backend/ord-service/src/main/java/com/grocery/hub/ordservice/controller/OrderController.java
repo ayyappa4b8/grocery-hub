@@ -2,7 +2,7 @@ package com.grocery.hub.ordservice.controller;
 
 import java.util.List;
 
-import com.grocery.hub.ordservice.common.OrdRequest;
+import com.grocery.hub.ordservice.common.OrderRequest;
 import com.grocery.hub.ordservice.common.OrderResponse;
 import com.grocery.hub.ordservice.entity.CustomerOrder;
 import com.grocery.hub.ordservice.service.OrderService;
@@ -25,7 +25,7 @@ public class OrderController {
 
 	@PostMapping("/{cust-id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderResponse placeOrder(@PathVariable("cust-id") long custId, @RequestBody OrdRequest request) {
+	public OrderResponse placeOrder(@PathVariable("cust-id") long custId, @RequestBody OrderRequest request) {
 		
 		return orderService.placeOrderr(request,custId);
 

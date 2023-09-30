@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.grocery.hub.ordservice.common.Cart;
-import com.grocery.hub.ordservice.common.OrdRequest;
+import com.grocery.hub.ordservice.common.OrderRequest;
 import com.grocery.hub.ordservice.common.Customer;
 import com.grocery.hub.ordservice.repository.OrderRepository;
 
@@ -31,23 +31,16 @@ public class OrderService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public OrderResponse placeOrderr(OrdRequest orderRequest, long custId)
+	public OrderResponse placeOrderr(OrderRequest orderRequest, long custId)
 	{
 		
 		List<OrderItems> orderItems = new ArrayList<OrderItems>();
-		
-//		AddToCartResponse ar = restTemplate.getForObject("http://CART-SERVICE/cart/cartItems/"+custId,AddToCartResponse.class);
-		
-//		List<CartItems> cartItems = ar.getCartItems();
-//		long totalBill = ar.getTotalBill();
-//		long quantity = ar.getCartItemsQuantity();
 		
 		ResponseEntity<Cart[]> ci = restTemplate.getForEntity("http://CART-SERVICE/cart/cartItem/"+custId,Cart[].class);
 		Cart[] cc = ci.getBody();
 		List<Cart> cartItems = new ArrayList<Cart>();
 		for(int i=0;i<cc.length;i++)
 		{
-			System.out.println(cc[i]);
 			cartItems.add(cc[i]);
 		}
 		
@@ -119,13 +112,13 @@ public class OrderService {
 	
 	public List<CustomerOrder> getCustOrderById(long custId)
 	{
-		List<CustomerOrder> custOrders = orderRepository.findByCustomerId(custId);
-		Collections.sort(custOrders, new Comparator<CustomerOrder>() {
+		List<CustomerOrder> customerOrder = orderRepository.findByCustomerId(custId);
+		Collections.sort(customerOrder, new Comparator<CustomerOrder>() {
 		        public int compare(CustomerOrder emp1, CustomerOrder emp2) {
 		            return emp2.getOrderDate().compareTo(emp1.getOrderDate());
 		        }
 		    });
-		return custOrders;
+		return customerOrder;
 	}
 	
 

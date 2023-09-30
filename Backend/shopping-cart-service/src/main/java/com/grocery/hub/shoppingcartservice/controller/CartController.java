@@ -1,18 +1,16 @@
 package com.grocery.hub.shoppingcartservice.controller;
 
-import java.util.List;
-
+import com.grocery.hub.shoppingcartservice.common.AddToCartDto;
+import com.grocery.hub.shoppingcartservice.common.AddToCartResponse;
+import com.grocery.hub.shoppingcartservice.dto.CartDTO;
+import com.grocery.hub.shoppingcartservice.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.grocery.hub.shoppingcartservice.common.AddToCartDto;
-import com.grocery.hub.shoppingcartservice.common.AddToCartResponse;
-import com.grocery.hub.shoppingcartservice.entity.Cart;
-import com.grocery.hub.shoppingcartservice.service.CartService;
+import java.util.List;
 
 
 @RestController
-//@CrossOrigin(origins="*")
 @RequestMapping("/api/v1/cart")
 public class CartController {
 	
@@ -30,46 +28,43 @@ public class CartController {
 		
 		return cartService.addToCartt(custId,addToCartDto);
 	}
-	
-	
+
 	@PutMapping("/{id}")
 	public String updateAndAddProd(@PathVariable("id") long custId,@RequestBody AddToCartDto addToCartDto) {
 		
 		return cartService.updateAndAddProduct(custId, addToCartDto);
 	}
 	
-	@GetMapping("/{cust-id}/{pid}")
-	public Cart checkProductInCart(@PathVariable("cust-id") long custId,@PathVariable("pid") long pid)
+	@GetMapping("/{customer_id}/{pid}")
+	public CartDTO checkProductInCart(@PathVariable("customer_id") long custId,@PathVariable("pid") long pid)
 	{
 		return cartService.checkProductInCart(custId, pid);
 	}
 	
-	
-	
-	@GetMapping("/{cust-id}")
-	public AddToCartResponse show(@PathVariable("cust-id") long custId)
+	@GetMapping("/{customer_id}")
+	public AddToCartResponse show(@PathVariable("customer_id") long custId)
 	{
 		return cartService.getCartItemsById(custId);
 	}
 	
-	@GetMapping("/count-items/{cust-id}")
-	public long countCartItems(@PathVariable("cust-id") long custId)
+	@GetMapping("/count-items/{customer_id}")
+	public long countCartItems(@PathVariable("customer_id") long custId)
 	{
 		return cartService.countCartItems(custId);
 	}
 	
-	@GetMapping("/cart-item/{cust-id}")
-	public List<Cart> getCartItemsByCustomerId(@PathVariable("cust-id") long custId) {
+	@GetMapping("/cart-item/{customer_id}")
+	public List<CartDTO> getCartItemsByCustomerId(@PathVariable("customer_id") long custId) {
 		return cartService.getCartItems(custId);
 	}
 	
-	@DeleteMapping("/{cust-id}")
-	public void deleteCartByCustomerId(@PathVariable("cust-id") long custId) {
+	@DeleteMapping("/{customer_id}")
+	public void deleteCartByCustomerId(@PathVariable("customer_id") long custId) {
 		cartService.delCartByCustomerId(custId);
 	}
 	
-	@DeleteMapping("/customers/{cust-id}/products/{product-id}")
-	public AddToCartResponse deleteCartItemById(@PathVariable("cust-id") long custId,@PathVariable("product-id")long productId) {
+	@DeleteMapping("/customers/{customer_id}/products/{product-id}")
+	public AddToCartResponse deleteCartItemById(@PathVariable("customer_id") long custId,@PathVariable("product-id")long productId) {
 		return cartService.deleteCartItemById(custId,productId);
 	}
 	

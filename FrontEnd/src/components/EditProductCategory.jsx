@@ -3,35 +3,37 @@ import { useParams, useNavigate } from 'react-router-dom';
 import productService from '../service/productService';
 import swal from 'sweetalert';
 
-const EditProductCategory = () => {
-  const { categoryId } = useParams();
-
+const EditProductCategory = ({ show, onClose, categoryId, onEditCategory }) => {
   const [editedProductCategory, setEditedProductCategory] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the existing product category details based on categoryId
-    productService.findProductCategoryById(categoryId)
-      .then((res) => {
-        const { productCategoryName, description } = res.data;
-        setEditedProductCategory(productCategoryName);
-        setEditedDescription(description);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [categoryId]);
+    if (show) {
+      // Fetch the existing product category details based on categoryId
+      productService.findProductCategoryById(categoryId)
+        .then((res) => {
+          const { productCategoryName, description } = res.data;
+          setEditedProductCategory(productCategoryName);
+          setEditedDescription(description);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [categoryId, show]);
 
-  const handleSave = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
     // Send a request to update the product category details
     productService.updateProductCategory(categoryId, editedProductCategory, editedDescription)
       .then(() => {
-       swal('Product Category has been update!', {
-        icon: 'success',
-      });
-       navigate("/admin");
+        swal('Product Category has been updated!', {
+          icon: 'success',
+        });
+        navigate("/admin");
+        onClose(); // Close the modal after successful update
+        onEditCategory(categoryId); // Notify the parent component of the edit
       })
       .catch((err) => {
         console.error(err);
@@ -39,38 +41,60 @@ const EditProductCategory = () => {
   };
 
   return (
-    <div className="container mt-3">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <div className="card">
-            <div className="card-header fs-3 text-center">Edit Product Category</div>
-            <div className="card-body">
-              <form onSubmit={handleSave}>
-                <div className="mb-3">
-                  <label>Product Category</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={editedProductCategory}
-                    onChange={(e) => setEditedProductCategory(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Description</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={editedDescription}
-                    onChange={(e) => setEditedDescription(e.target.value)}
-                    required
-                  />
-                </div>
-                <button className="btn btn-primary col-md-12" type="submit">
+    <div
+      className={`modal ${show ? 'show' : ''}`}
+      tabIndex="-1"
+      style={{
+        display: show ? 'block' : 'none',
+        background: show ? 'rgba(0, 0, 0, 0.6)' : 'transparent', // Add background blur effect
+      }}
+    >
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Edit Product Category</h5>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={onClose}
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="modal-body">
+            <form onSubmit={handleUpdate}>
+              <div className="mb-3">
+                <label>Product Category</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={editedProductCategory}
+                  onChange={(e) => setEditedProductCategory(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={editedDescription}
+                  onChange={(e) => setEditedDescription(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={onClose}
+                >
+                  Close
+                </button>
+                <button className="btn btn-primary" type="submit">
                   Update
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

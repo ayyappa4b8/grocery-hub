@@ -29,7 +29,6 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long cid;
-//	private long cartId;
 	private long customerId;
 	private long productId;
 	private String productName;
@@ -38,10 +37,4 @@ public class Cart {
 	@Lob
 	@Column(name = "productImage", columnDefinition="LONGBLOB")
 	private byte[] productImage;
-//	private long totalBill;
-//	private long cartItemsQuantity;
-	
-//	@OneToMany(targetEntity=CartItems.class,cascade = CascadeType.ALL)
-//	@JoinColumn(name="fk_cart_id",referencedColumnName="cart_id")
-//	private List<CartItems> cartItems;
 }

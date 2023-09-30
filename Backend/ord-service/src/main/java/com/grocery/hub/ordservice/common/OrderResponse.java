@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class OrderResponse {
 	
 	private CustomerOrder order;
-//	private String transactionId;
 	private String message;
 	
 }

@@ -1,10 +1,11 @@
 import axios from "axios";
+import { API_URL } from "../constants";
 
 class CartService{
     
 
     addItemToCartEach(productId,quantity,custId){
-        return axios.post("http://localhost:9191/api/v1/cart/"+custId,{
+        return axios.post(`${API_URL}/cart/${custId}`,{
             productId:productId,
             productQuantity:quantity
         });
@@ -12,11 +13,11 @@ class CartService{
     }
 
     getCartItemsByCustomerId(custId){
-        return axios.get("http://localhost:9191/api/v1/cart/cart-item/"+custId);
+        return axios.get(`${API_URL}/cart/cart-item/${custId}`);
     }
 
     cartUpdate(productId,quantity,custId){
-        return axios.put("http://localhost:9191/api/v1/cart/"+custId,{
+        return axios.put(`${API_URL}/cart/${custId}`,{
             productId:productId,
             productQuantity:quantity
         });
@@ -24,23 +25,23 @@ class CartService{
     }
 
     checkProductInCart(custId,pid){
-        return axios.get("http://localhost:9191/api/v1/cart/"+custId+"/"+pid);
+        return axios.get(`${API_URL}/cart/${custId}/${pid}`);
     }
 
 
     getCartItemsCount(custId){
-        return axios.get("http://localhost:9191/api/v1/cart/count-items/"+custId);
+        return axios.get(`${API_URL}/cart/count-items/${custId}`);
     }
     
     getCart(custId)
     {
-        return axios.get("http://localhost:9191/api/v1/cart/"+custId);
+        return axios.get(`${API_URL}/cart/${custId}`);
     }
 
 
     deleteItemFromCart(productId,custId)
     {
-        return axios.delete("http://localhost:9191/api/v1/cart/customers/"+custId+"/products/"+productId);
+        return axios.delete(`${API_URL}/cart/customers/${custId}/products/${productId}`);
     }
    
 }

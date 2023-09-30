@@ -5,6 +5,7 @@ import { Ellipsis } from 'react-bootstrap/esm/PageItem';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
+import { API_URL } from '../constants';
 
 const RegisterTest = () => {
 
@@ -50,15 +51,13 @@ const RegisterTest = () => {
     }
     if(flag===true)
     {
-      // console.log("@@@@@@@222");
       setFormErrors({});
       try{
-        const res=await axios.post("http://localhost:9191/api/v1/customers",{
+        const res=await axios.post(`${API_URL}/customers`,{
           customerName: customerName,
           customerEmail: customerEmail,
           customerPassword: customerPassword,
         });
-        // alert("Registered Successfully!");
         if(res.data==="Email already exists")
         {
           swal({title:'Email Already exists Enter another Email!',icon: "warning",dangerMode: true})

@@ -31,20 +31,13 @@ public class CustomerOrder {
 	private Instant orderDate;
 	private String orderStatus;
 	
-//	@Temporal(TemporalType.DATE)
-//	private Date orderDate;
-//	@ManyToOne()
-//	@ManyToOne
-//	@JoinColumn(name = "customerId")
-//	private Customer customer;
 	private long customerId;
 	private String customerName;
 	private String customerEmail;
 	private long customerContact;
 	private long totalAmount;
 	private String customerAddress;
-//	private long customerId;
-	
+
 	@OneToMany(targetEntity=OrderItems.class,cascade = CascadeType.ALL)
 	@JoinColumn(name="fk_order_id",referencedColumnName="order_id")
 	private List<OrderItems> orderItems;

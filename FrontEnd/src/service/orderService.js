@@ -1,23 +1,24 @@
 import axios from "axios";
+import { API_URL } from "../constants";
 
 class OrderService{
 
 
 
     getAllOrders(){
-        return axios.get("http://localhost:9191/api/v1/orders");
+        return axios.get(`${API_URL}/orders`);
     }
 
     getOrderById(id){
-        return axios.get("http://localhost:9191/api/v1/orders/"+id);
+        return axios.get(`${API_URL}/orders/${id}`);
     }
 
     getOrderByCustomerId(uid){
-        return axios.get("http://localhost:9191/api/v1/orders/customers"+uid);
+        return axios.get(`${API_URL}/orders/customers/${uid}`);
     }
 
     placeOrder(custId,customerAddress,customerContact){
-        return axios.post("http://localhost:9191/api/v1/orders/"+custId,{
+        return axios.post(`${API_URL}/orders/${custId}`,{
             customerAddress:customerAddress,
             customerContact:customerContact
         });

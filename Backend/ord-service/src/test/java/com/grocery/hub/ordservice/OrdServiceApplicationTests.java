@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.grocery.hub.ordservice.common.OrdRequest;
+import com.grocery.hub.ordservice.common.OrderRequest;
 import com.grocery.hub.ordservice.common.OrderResponse;
 import com.grocery.hub.ordservice.entity.CustomerOrder;
 import com.grocery.hub.ordservice.entity.OrderItems;
@@ -44,7 +44,7 @@ class OrdServiceApplicationTests {
 	@Test
 	public void saveOrderTest()
 	{
-		OrdRequest od = new OrdRequest("ABC Street",12345689);
+		OrderRequest od = new OrderRequest("ABC Street",12345689);
 		List<OrderItems> ct = new ArrayList<OrderItems>();
 		when(orderRepository.findAll()).thenReturn(Stream
 				.of(new CustomerOrder(3,Instant.now(),"success",101,"abcd","abcd@gmail.com",12345678,120,"ACB Street",ct)).collect(Collectors.toList()));

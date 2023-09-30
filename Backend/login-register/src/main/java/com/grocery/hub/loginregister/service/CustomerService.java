@@ -3,14 +3,16 @@ package com.grocery.hub.loginregister.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.grocery.hub.loginregister.dto.CustomerDto;
 import com.grocery.hub.loginregister.entity.Role;
-import com.grocery.hub.loginregister.Dto.LoginDto;
-import com.grocery.hub.loginregister.Dto.LoginResponse;
+import com.grocery.hub.loginregister.dto.LoginDto;
+import com.grocery.hub.loginregister.dto.LoginResponse;
 import com.grocery.hub.loginregister.entity.Customer;
 import com.grocery.hub.loginregister.entity.SubscribeCustomers;
 import com.grocery.hub.loginregister.exceptions.CustomerNotFoundException;
 import com.grocery.hub.loginregister.repository.CustomerRepository;
 import com.grocery.hub.loginregister.repository.SubscribeCustomersRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,10 @@ public class CustomerService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	
+
+	@Autowired
+	private ModelMapper modelMapper;
+
 	public String saveCustomer(Customer customer) {
 		Role role = new Role();
 		role.setRoleId(1); //By default, set role is external customer
@@ -96,14 +100,14 @@ public LoginResponse loginCustomer(LoginDto loginDto) {
 		
 	}
 	
-	public Customer getCustomerById(long customerId) throws CustomerNotFoundException {
-		Customer c = customerRepository.findByCustomerId(customerId);
-		if(c==null)
+	public CustomerDto getCustomerById(long customerId) throws CustomerNotFoundException {
+		Customer customer = customerRepository.findByCustomerId(customerId);
+		if(customer==null)
 		{
 			throw new CustomerNotFoundException("Customer with ID "+customerId+" not found!");
 		}
 		else {
-			return c;
+			return modelMapper.map(customer, CustomerDto.class);
 		}
 	}
 	
@@ -120,7 +124,5 @@ public LoginResponse loginCustomer(LoginDto loginDto) {
 		else {
 			throw new CustomerNotFoundException("Customer with "+custId+" not found!");
 		}
-		
-		
 	}
 }
