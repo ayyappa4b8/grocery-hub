@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import productService from '../service/productService';
 import swal from 'sweetalert';
 import AddProductCategory from './AddProductCategory';
-import EditProduct from './EditProduct';
 import EditProductCategory from './EditProductCategory';
 
 const ProductCategory = () => {

@@ -7,7 +7,6 @@ import Product from './components/Product';
 import ProductCategory from './components/ProductCategory';
 import EditProductCategory from './components/EditProductCategory';
 import Admin from './pages/Admin';
-import EditProduct from './components/EditProduct';
 import OrdersList from './components/OrdersList';
 import OrderDetails from './components/OrderDetails';
 import CustomersList from './components/CustomersList';
@@ -59,7 +58,6 @@ function App() {
           <Route path="/admin/product" element={<Product/>}/>
           <Route path="/admin/productCategory" element={<ProductCategory/>}/>
           <Route path="/admin/editProductCategory/:categoryId" element={<EditProductCategory/>}/>
-          <Route path="/admin/editProduct/:id" element={<EditProduct/>}/>
           <Route path="/cat/:category" element={<FilterCategory/>}/>
           <Route path="/admin/orders" element={<OrdersList/>}/>
           <Route path="/admin/orders/orderDetails/:id" element={<OrderDetails/>}/>

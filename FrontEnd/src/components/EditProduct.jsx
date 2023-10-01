@@ -1,128 +1,122 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import swal from 'sweetalert';
+import React, { useState } from 'react';
 import productService from '../service/productService';
+import swal from 'sweetalert';
 
-const EditProduct = () => {
+const EditProduct = ({ product, onClose, isModalOpen }) => {
+  const [editedProduct, setEditedProduct] = useState({
+    // Initialize the form fields with the product details
+    productName: product.productName,
+    productCategory: product.category.productCategoryName,
+    description: product.description,
+    productPrice: product.productPrice,
+    productImage: product.productImage,
+    // Add other fields as needed
+  });
 
-  // const [product,setProduct]= useState({
-  //   productId:"",
-  //   productName:"",
-  //   productCategory:"",
-  //   productPrice:"",
-  //   productImage:""
-  // })
-
-  const [prouductId,setProductId]=useState("");
-  const [productName,setProductName] = useState("");
-  const [productCategory,setProductCategory] = useState("");
-  const [description,setDescription] = useState("");
-  const [productPrice,setProductPrice] = useState("");
-  const [productImage,setProductImage] = useState("");
-  const [msg,setMsg]=useState("");
-  const navigate = useNavigate();
-
-  // const handleChange=(e)=>{
-  //   const value = e.target.value;
-  //   setProduct({...product,[e.target.name]:value})
-  // };
-
-  const{id} = useParams();
-
-  console.log(id);
-
-  useEffect(() => {
-    productService.getProductById(id)
-    .then((res)=>{
-      setProductName(res.data.productName);
-      setProductCategory(res.data.productCategory);
-      setDescription(res.data.description);
-      setProductPrice(res.data.productPrice);
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
-  },[]);
-
-  async function ProductUpdate(e){
+  const handleEditProduct = async (e) => {
     e.preventDefault();
-    console.log(productName);
-    console.log(productCategory,description,productPrice,productImage);
-
-    productService.editProduct(productImage,productName,productCategory,description,productPrice,id)
-    .then((res)=>{
-      console.log(res);
-      swal({title:'Product Updated Successfully',icon:'success'});
-      console.log("Product Updated succesfully");
-      // setMsg("Product Updated Successfully");
-      setProductName(""); 
-      setProductCategory("");
-      setDescription("");
-      setProductPrice("");
-      navigate("/admin");
-
-
-    })
-    .catch((err)=>{
-      console.log(err);
-      alert(err);
-    });
+    try {
+      // Call the API to update the product details using productService.saveProduct or a similar method
+      await productService.saveProduct(
+        product.productImage,
+        editedProduct.productName,
+        editedProduct.productCategory,
+        editedProduct.description,
+        editedProduct.productPrice
+        // Add other fields as needed
+      );
+      swal({ title: 'Product Updated Successfully', icon: 'success' });
+      onClose(); // Close the popup after successful update
+    } catch (error) {
+      console.error(error);
+      alert(error);
+    }
   };
 
-
   return (
-    <div className='container mt-3'>
-      <div className='row'>
-        <div className='col-md-6 offset-md-3'>
-          <div className='card'>
-            <div className='card-header fs-3 text-center'>Edit Product</div>
-            {
-              msg &&
-              <p className='fs-4 text-center text-success'>{msg}</p>
-            }
-            <div className='card-body'>
-              <form onSubmit={(e)=> ProductUpdate(e)} encType="multipart/form-data">
-                <div className='mb-3'>
-                  <label>Product Name</label>
-                  <input type="text" id="productName" name="productName" className='form-control'
-                  onChange={(event) =>{ setProductName(event.target.value);}}
-                  value={productName} required/>
+    <div>
+    {isModalOpen && ( // Render the modal conditionally based on isModalOpen state
+        <div
+          className="modal fade show" // Add the "show" class to display the modal
+          id="addProductModal"
+          tabIndex="-1"
+          aria-labelledby="addProductModalLabel"
+          aria-hidden="true"
+           style={{
+            display: 'block' ,
+            background: 'rgba(0, 0, 0, 0.6)'
+          }}
+        >
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Edit Product</h5>
+            <button type="button" className="close" onClick={onClose}>
+              <span>&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form onSubmit={handleEditProduct}>
+              {/* Create form fields to edit product details */}
+              {/* Example: */}
+              <div className="mb-3">
+                <label htmlFor="productName">Product Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="productName"
+                  value={editedProduct.productName}
+                  onChange={(e) => setEditedProduct({ ...editedProduct, productName: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="productCategory">Product Category</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="productCategory"
+                  value={editedProduct.productCategory}
+                  onChange={(e) => setEditedProduct({ ...editedProduct, productCategory: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="description">Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="description"
+                  value={editedProduct.description}
+                  onChange={(e) => setEditedProduct({ ...editedProduct, description: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="productPrice">Product Price</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="productPrice"
+                  value={editedProduct.productPrice}
+                  onChange={(e) => setEditedProduct({ ...editedProduct, productPrice: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="productImage">Product Image</label>
+                <input className="form-control" type="file" name="productImage" id="productImage"
+                  onChange={(e) => setEditedProduct({ ...editedProduct, productImage: e.target.value })}
+                />
                 </div>
-                <div className='mb-3'>
-                  <label>Product Category</label>
-                  <input type="text" id="productCategory" name="productCategory" className='form-control'
-                  onChange={(event) =>{ setProductCategory(event.target.value);}}
-                  value={productCategory} required/>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Description</label>
-                  <input className="form-control" name="description" id="description" rows="2" type="text"
-                  onChange={(event) =>{ setDescription(event.target.value);}}
-                  value={description} required/>
-                </div>
-                <div className='mb-3'>
-                  <label>Product Price</label>
-                  <input type="number" id="productPrice" name="productPrice" className='form-control'
-                  onChange={(event) =>{ setProductPrice(event.target.value);}}
-                  value={productPrice} required/>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Product Image</label>
-                  <input className="form-control" type="file" name="productImage" id="productImage"
-                  onChange={(event) =>{ setProductImage(event.target.files[0]);}}
-                  files={productImage} required/>
-                </div>
-                
-                <button className='btn btn-primary col-md-12' type="submit">Update Product</button>
-              </form>
-               <br></br>
-             <Link to="/admin"><button className='btn btn-success col-md-12' type="submit"> Back to Products</button></Link> 
-            </div>
+              {/* Add other form fields for product details */}
+              <button type="submit" className="btn btn-primary">
+                Save Changes
+              </button>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+    )}
+    </div>
+  );
+};
 
-export default EditProduct
+export default EditProduct;

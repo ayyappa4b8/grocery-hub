@@ -22,8 +22,6 @@ public class ProductController {
 	private ProductService productService;
 	@Autowired
 	private ProductCategoryService productCategoryService;
-	
-
 
 	@PostMapping(consumes="multipart/form-data")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -35,9 +33,7 @@ public class ProductController {
 		
 		return productService.createProduct(productImage,productName,productCategory,description,productPrice);
 	}
-	
-	
-	
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<ProductDTO> getAllProducts(){

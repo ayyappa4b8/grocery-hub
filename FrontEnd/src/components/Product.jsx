@@ -4,6 +4,7 @@ import productService from '../service/productService';
 import Pagination from 'react-bootstrap/Pagination';
 import swal from 'sweetalert';
 import AddProduct from './AddProduct';
+import EditProduct from './EditProduct';
 
 const Product = () => {
 
@@ -12,7 +13,6 @@ const Product = () => {
   const [description,setDescription] = useState("");
   const [productPrice,setProductPrice] = useState("");
   const [productImage,setProductImage] = useState("");
-  const [msg,setMsg]=useState("");
   const navigate = useNavigate();
   const [productList, setProductList] = useState([]);
   const [search, setSearch] = useState('');
@@ -20,6 +20,9 @@ const Product = () => {
   const [page,setPage]= useState(0);
   const [pageCount,setPageCount]= useState(0);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false); // State to control edit popup visibility
+
 
   useEffect(()=>{
     init();
@@ -68,27 +71,9 @@ const Product = () => {
     })
   }
 
-  async function ProductRegister(e){
-    e.preventDefault();
-    console.log(productName);
-    console.log(productCategory,description,productPrice,productImage);
-    productService.saveProduct(productImage,productName,productCategory,description,productPrice)
-    .then((res)=>{
-      console.log(res);
-      console.log("Product added succesfully");
-      swal({title:'Product Updated Successfully',icon:'success'});
-      // setMsg("Product Added Successfully");
-      setProductName("");
-      setProductCategory("");
-      setDescription("");
-      setProductImage("");
-      setProductPrice("");
-      navigate("/admin");
-    })
-    .catch((err)=>{
-      console.log(err);
-      alert(err);
-    });
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product);
+    setShowEditModal(true);
   };
 
 
@@ -132,7 +117,10 @@ const Product = () => {
                     <td>{p.category.productCategoryName}</td>
                     <td>{p.productPrice}</td>
                     <td>
-                      <Link to={'editProduct/'+p.productId}><button className='btn btn-sm btn-warning'>Edit</button></Link>&nbsp;
+                      <button onClick={() => handleEditProduct(p)} className="btn btn-sm btn-warning">
+                        Edit
+                      </button>
+                      &nbsp;
                       <button onClick={()=> deleteProduct(p.productId)} className='btn btn-sm btn-danger'>Delete</button>
                     </td>
                   </tr>
@@ -151,7 +139,18 @@ const Product = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
+      {showEditModal && (
+        <EditProduct
+          product={selectedProduct}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedProduct(null);
+            init(); // Refresh the product list after editing
+          }}
+          isModalOpen={showEditModal}
+        />
+      )}
     </div>
   )
 }
